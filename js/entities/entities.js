@@ -1,7 +1,7 @@
 //this is for the player. a basic setup
-game.PlayerEntity = me.Entity.extend ({
-	init: function(x , y, settings){
-       this._super(me.Entity, "init", [x, y, {
+/**/game.PlayerEntity = me.Entity.extend ({
+	init:function(x , y, settings){
+       this._super(me.Entity, 'init', [x, y, {
        	image: "player",
        	width: 64,
        	height: 64,
@@ -17,3 +17,4 @@ game.PlayerEntity = me.Entity.extend ({
 
 	}
 });
+/**/
