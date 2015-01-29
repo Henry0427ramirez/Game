@@ -13,10 +13,13 @@
        }]);
 
        this.body.setVelocity(3,20);
+//screen will now follow the player
        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
        
        this.renderable.addAnimation("idle", [78]);
        this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
+
+       this.renderable.addAnimation("attack", [65 , 66, 67, 68, 69, 70, 71, 72], 80);
 
        this.renderable.setCurrentAnimation("idle");
 	},
@@ -30,14 +33,38 @@
        else{
         this.body.vel.x = 0;
        }
+        
+             if (me.input.isKeyPressed("attack")) {
+       	if (!this.renderable.isCurrentAnimation("attack")) {
+       		console.log(!this.renderable.isCurrentAnimation("attack"))
+// sets animation to attack then once it  over it goes back to idle
+       	this.renderable.setCurrentAnimation("attack", "idle");
+//once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
+       	this.renderable.setAnimationFrame();
+       
+       	}
 
-       if (this.body.vel.x !==0) {
+       }
+
+      else if (this.body.vel.x !==0) {
        if(!this.renderable.isCurrentAnimation("walk")){
         this.renderable.setCurrentAnimation("walk");
        }
    }else{
    	    this.renderable.setCurrentAnimation("idle");
    }
+
+           if (me.input.isKeyPressed("attack")) {
+       	if (!this.renderable.isCurrentAnimation("attack")) {
+       		console.log(!this.renderable.isCurrentAnimation("attack"))
+// sets animation to attack then once it  over it goes back to idle
+       	this.renderable.setCurrentAnimation("attack", "sidle");
+//once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
+       	this.renderable.setAnimationFrame();
+       
+       	}
+
+       }
 
        this.body.update(delta);
        
