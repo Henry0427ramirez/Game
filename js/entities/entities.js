@@ -34,6 +34,7 @@
         this.body.vel.x = 0;
        }
         
+        
              if (me.input.isKeyPressed("attack")) {
        	if (!this.renderable.isCurrentAnimation("attack")) {
        		console.log(!this.renderable.isCurrentAnimation("attack"))
@@ -45,7 +46,7 @@
        	}
 
        }
-
+       
       else if (this.body.vel.x !==0) {
        if(!this.renderable.isCurrentAnimation("walk")){
         this.renderable.setCurrentAnimation("walk");
@@ -58,7 +59,7 @@
        	if (!this.renderable.isCurrentAnimation("attack")) {
        		console.log(!this.renderable.isCurrentAnimation("attack"))
 // sets animation to attack then once it  over it goes back to idle
-       	this.renderable.setCurrentAnimation("attack", "sidle");
+       	this.renderable.setCurrentAnimation("attack", "idle");
 //once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
        	this.renderable.setAnimationFrame();
        
