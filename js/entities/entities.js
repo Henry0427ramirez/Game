@@ -30,18 +30,19 @@
         this.body.vel.x += this.body.accel.x * me.timer.tick;
         this.flipX(true);
        }  
+// to help my player left ad right
        else if (me.input.isKeyPressed("left")){
            this.body.vel.x -= this.body.accel.x * me.timer.tick;     
            this.flipX (false);
       }else{
       	this.body.vel.x = 0;
       } 
-        
+// so my player will now jump but theres a problem, he only jumps once.
       if (me.input.isKeyPressed("jump") && !this.jumping && !this.falling) {
       	this.jumping = true;
       	this.body.vel.y -= this.body.accel.y * me.timer.tick;
       }
-
+//to make my player attack so he can damage the towers
             if (me.input.isKeyPressed("attack")) {
        	if (!this.renderable.isCurrentAnimation("attack")) {
        		console.log(!this.renderable.isCurrentAnimation("attack"))
@@ -49,9 +50,7 @@
        	this.renderable.setCurrentAnimation("attack", "idle");
 //once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
        	this.renderable.setAnimationFrame();
-       
        	}
-
        }
 
       else if (this.body.vel.x !==0) {
