@@ -30,12 +30,19 @@
         this.body.vel.x += this.body.accel.x * me.timer.tick;
         this.flipX(true);
        }  
-       else{
-        this.body.vel.x = 0;
-       }
+       else if (me.input.isKeyPressed("left")){
+           this.body.vel.x -= this.body.accel.x * me.timer.tick;     
+           this.flipX (false);
+      }else{
+      	this.body.vel.x = 0;
+      } 
         
-        
-             if (me.input.isKeyPressed("attack")) {
+      if (me.input.isKeyPressed("jump") && !this.jumping && !this.falling) {
+      	this.jumping = true;
+      	this.body.vel.y -= this.body.accel.y * me.timer.tick;
+      }
+
+            if (me.input.isKeyPressed("attack")) {
        	if (!this.renderable.isCurrentAnimation("attack")) {
        		console.log(!this.renderable.isCurrentAnimation("attack"))
 // sets animation to attack then once it  over it goes back to idle
@@ -46,7 +53,7 @@
        	}
 
        }
-       
+
       else if (this.body.vel.x !==0) {
        if(!this.renderable.isCurrentAnimation("walk")){
         this.renderable.setCurrentAnimation("walk");
