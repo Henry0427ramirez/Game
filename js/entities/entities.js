@@ -38,8 +38,8 @@
       	this.body.vel.x = 0;
       } 
 // so my player will now jump but theres a problem, he only jumps once.
-      if (me.input.isKeyPressed("jump") && !this.jumping && !this.falling) {
-      	this.jumping = true;
+      if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
+      	this.body.jumping = true;
       	this.body.vel.y -= this.body.accel.y * me.timer.tick;
       }
 //to make my player attack so he can damage the towers
