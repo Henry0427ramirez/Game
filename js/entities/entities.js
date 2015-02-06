@@ -97,7 +97,7 @@
             this.body.vel.x = 0;
             this.pos.x = this.pos.x +1;
           }
-        if (!this.renderable.isCurrentAnimation("attack") && this.now.lastHit >= 1000) {
+        if (!this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000) {
         	console.log("tower Hit");
         	this.lastHit = this.now;
         	response.b.loseHealth();
@@ -164,7 +164,7 @@ game.EnemyBaseEntity = me.Entity.extend({
     	spritewidth:"100",
     	spriteheight:"100",
         getShape:function(){
-        return (new me.Rect(0, 0, 100, 100)).toPolygon();
+        return (new me.Rect(0, 0, 100, 70)).toPolygon();
        }
 
     }]);
