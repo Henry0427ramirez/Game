@@ -177,9 +177,11 @@ game.EnemyBaseEntity = me.Entity.extend({
     this.type = "EnemyBaseEntity";
 
      this.renderable.addAnimation("idle", [0]);
+    //sets animation for enemybase
      this.renderable.addAnimation("broken",[1]);
+    //burned base
      this.renderable.setCurrentAnimation("idle");
-
+    // fixed base
     },
 
     update:function(delta){
@@ -203,37 +205,52 @@ game.EnemyBaseEntity = me.Entity.extend({
 });
 
 game.EnemyCreep = me.Entity.extend ({
+    init: function(x, y, settings){
+    	this._super(me.Entity, 'init', [x, y, {
+           image: "creep1",
+           width: 32,
+           height: 64, 
+           spritewidth: "32",
+           spriteheight: "64",
+           getShape: function(){
+           	return (new me.Rect(0, 0, 32, 64)).toPolygon();
+           }
+    	}]);
+    	//gives health
+    	this.health = 10;
+    	this.alwaysUpdate = true;
+    	//sets speed
+    	this.body.setVelocity(3, 20);
+
+    	this.type = "EnemyCreep";
+    	//uses image
+    	this.renderable.addAnimation("walk", [3, 4, 5], 80);
+    	this.renderable.setCurrentAnimation("walk");
+    },
+    update: function(){
+
+    return true;
+    }
+});
+
+game.GameManager = Object.extend({
     init: function(x,y, settings){
-    	this._super(me.Entity, 'init'[x, y {
-          image:"creep1",
-          width:32,
-          height:64,
-          spritewidth:"32",
-          spriteheight:"64",
-          getShape: function (){
-          	return(new me.Rect(0, 0, 32, 64)).toPolygon();
-          }
-    }]);
-    this.health = 10;
-    this.alwaysUpdate = true;
+       this.now = new Date().getTime();
+       this.lastCreep = new Date().getTime();
 
-    this.setVelocity(3,20);
-
-    this.type = "EnemyCreep";
-
-    this.renderable.addAnimation("walk", [3, 4, 5], 80);
-    this.renderable.setCurrentAnimation("walk");
-    
+       this.alwaysUpdate = true;
     },
 
     update: function(){
+    	this.now = new Date().getTime();
 
+    	if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)){
+    		var creep = me.pool.pull("EnemyCreep", 1000, 0, {});
+    		me.game.world.addChild(creep, 5); 
+    	}
+    	return true;
     }
-
 });
-
-
-
 
 
 
