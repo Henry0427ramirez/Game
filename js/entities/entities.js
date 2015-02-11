@@ -219,7 +219,10 @@ game.EnemyCreep = me.Entity.extend ({
     	//gives health
     	this.health = 10;
     	this.alwaysUpdate = true;
+    	//lets us kno the enemy is attacking.
+    	this.attacking = false;
     	//sets speed
+    	this.now = new Date().getTime();
     	this.body.setVelocity(3, 20);
 
     	this.type = "EnemyCreep";
@@ -229,9 +232,13 @@ game.EnemyCreep = me.Entity.extend ({
     },
 
     update: function(delta){
+    this.now = new Date().getTime();
+
+
     //makes the enemy move.
      this.body.vel.x -= this.body.accel.x * me.timer.tick;
-
+//to collide with our player
+    me.collision.check(this, true, this.collideHandler.bind(this), true);
 
     this.body.update(delta);
 
@@ -239,7 +246,21 @@ game.EnemyCreep = me.Entity.extend ({
     this._super(me.Entity,"update", [delta]);
    
     return true;
+    },
+
+    collideHandler: function(response){
+    	if(response.b.type==='PlayerBase'){
+    		this.attacking=true;
+    		this.lastAttacking=this.now;
+    		this.body.vel.x = 0;
+    		this.pos.x = this.pos.x + 1;
+    		if ((this.now-this.lastHit >=1000)){
+    			this.lastHit = this.now;
+    			response.b.loseHealth(1);
+    		}
+    	}
     }
+
 });
 
 game.GameManager = Object.extend({
@@ -254,8 +275,9 @@ game.GameManager = Object.extend({
     	this.now = new Date().getTime();
 
     	if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)){
-    		var creep = me.pool.pull("EnemyCreep", 1000, 0, {});
-    		me.game.world.addChild(creep, 5); 
+    		this.lastCreep = this.now;
+    		var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
+    		me.game.world.addChild(creepe, 5); 
     	}
     	return true;
     }
