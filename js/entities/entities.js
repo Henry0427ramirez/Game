@@ -129,7 +129,7 @@ game.PlayerBaseEntity = me.Entity.extend({
     this.alwaysUpdate = true;
     this.body.onCollision = this.onCollision.bind(this);
 
-    this.type = "PlayerBaseEntity";
+    this.type = "PlayerBase";
 
      this.renderable.addAnimation("idle", [0]);
      this.renderable.addAnimation("broken",[1]);
@@ -147,6 +147,10 @@ game.PlayerBaseEntity = me.Entity.extend({
 
      this._super(me.Entity,"update", [delta]);
      return true;
+    },
+
+    loseHealth: function(damage){
+     this.health = this.health - damage;
     },
 
     onCollision: function(){
@@ -219,10 +223,13 @@ game.EnemyCreep = me.Entity.extend ({
     	//gives health
     	this.health = 10;
     	this.alwaysUpdate = true;
-    	//lets us kno the enemy is attacking.
+    	//lets us know the enemy is attacking.
     	this.attacking = false;
-    	//sets speed
+    	//keeps track of when our creep last attacked anything
+    	this.lastAttacking = new Date().getTime();
+    	this.lastHit = new Date().getTime();
     	this.now = new Date().getTime();
+    	//sets speed
     	this.body.setVelocity(3, 20);
 
     	this.type = "EnemyCreep";
@@ -253,9 +260,13 @@ game.EnemyCreep = me.Entity.extend ({
     		this.attacking=true;
     		this.lastAttacking=this.now;
     		this.body.vel.x = 0;
+    		//keeps moving to the right to maintain its position.
     		this.pos.x = this.pos.x + 1;
+    		//checks that it has been at least 1 seocnd since this creep hti the base
     		if ((this.now-this.lastHit >=1000)){
+            //updates the lasthit timer 
     			this.lastHit = this.now;
+    		// makes the player base call its loseHealth function and passesa damage of 1.
     			response.b.loseHealth(1);
     		}
     	}
@@ -276,8 +287,8 @@ game.GameManager = Object.extend({
 
     	if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)){
     		this.lastCreep = this.now;
-    		var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
-    		me.game.world.addChild(creepe, 5); 
+    		var creep = me.pool.pull("EnemyCreep", 1000, 0, {});
+    		me.game.world.addChild(creep, 5); 
     	}
     	return true;
     }
