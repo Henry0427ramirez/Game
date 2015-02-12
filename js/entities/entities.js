@@ -12,6 +12,7 @@
        	}
        }]);
        this.type = "PlayerEntity";
+       this.health = 20;
        this.body.setVelocity(4,20);
 //keeps track of the direction your character is going
        this.facing = "right";
@@ -80,6 +81,7 @@
 
 	loseHealth: function(damage){
         this.health = this.health - damage;
+        console.log(this.health);
 	},
 /**/
     collideHandler: function (response) {
@@ -278,12 +280,14 @@ game.EnemyCreep = me.Entity.extend ({
             var xdif = this.pos.x - response.b.pos.x; 
 
     		this.attacking=true;
-    	//	this.lastAttacking=this.now;
+    	    //this.lastAttacking=this.now;
+            if (xdif>0){
+    		this.pos.x = this.pos.x + 1;
     		this.body.vel.x = 0;
     		//keeps moving to the right to maintain its position.
-    		this.pos.x = this.pos.x + 1;
+            }
     		//checks that it has been at least 1 seocnd since this creep hti the base
-    		if ((this.now-this.lastHit >=1000)){
+    		if ((this.now-this.lastHit >=1000) && xdif>0){
             //updates the lasthit timer 
     			this.lastHit = this.now;
     		// makes the player base call its loseHealth function and passesa damage of 1.
