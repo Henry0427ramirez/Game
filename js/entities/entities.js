@@ -1,39 +1,61 @@
 //this is for the player. a basic setup
 /**/game.PlayerEntity = me.Entity.extend ({
 	init:function(x , y, settings){
-       this._super(me.Entity, 'init', [x, y, {
-       	image: "player",
-       	width: 64,
-       	height: 64,
-       	spritewidth: "64",
-       	spriteheight: "64",
-       	getShape: function(){
-       		return(new me.Rect(0, 0, 64, 64)).toPolygon();
-       	}
-       }]);
-       this.type = "PlayerEntity";
-       this.health = game.data.playerHealth;
-       this.body.setVelocity(game.data.playerMoveSpeed,20);
-//keeps track of the direction your character is going
-       this.facing = "right";
-       this.now = new Date().getTime();
-       this.lastHit = this.now;
-       this.dead = false;
-       this.attack = game.data.playerAttack;
-       this.lastAttack = new Date().getTime(); //havent used it yet.
+      this.setSuper();
+      this.setPlayerTimers();
+      this.setAttributes();
+    this.type = "PlayerEntity";
+      this.setFlags();
+
 //screen will now follow the player
-       me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+     me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+
+     this.addAnimation();
        
-       this.renderable.addAnimation("idle", [78]);
-       this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
-
-       this.renderable.addAnimation("attack", [65 , 66, 67, 68, 69, 70, 71, 72], 80);
-
-       this.renderable.setCurrentAnimation("idle");
+     this.renderable.setCurrentAnimation("idle");
 	},
 
+  setSuper: function(){
+      this._super(me.Entity, 'init', [x, y, {
+      image: "player",
+      width: 64,
+      height: 64,
+      spritewidth: "64",
+      spriteheight: "64",
+      getShape: function(){
+      return(new me.Rect(0, 0, 64, 64)).toPolygon();
+      }
+      }]);
+  },
+
+  setPlayerTimers: function(){
+      this.now = new Date().getTime();
+      this.lastHit = this.now;
+      this.lastAttack = new Date().getTime(); //havent used it yet.
+
+  },
+
+  setAttributes: function(){
+      this.health = game.data.playerHealth;
+      this.body.setVelocity(game.data.playerMoveSpeed,20);
+      this.attack = game.data.playerAttack; 
+  },
+
+  setFlags: function(){
+      //keeps track of the direction your character is going
+     this.facing = "right";
+     this.dead = false;
+  },
+
+  addAnimation: function(){
+      this.renderable.addAnimation("idle", [78]);
+      this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
+
+      this.renderable.addAnimation("attack", [65 , 66, 67, 68, 69, 70, 71, 72], 80);
+  },
+
 	update: function(delta){
-		this.now = new Date().getTime();
+		  this.now = new Date().getTime();
 	// to make sure if the sure is pressing on the key//adds to the position of my x by adding the velocity defined in setVelocity() and multiplying it by me.timer.tick makes the movement smooth
     if (this.health <= 0) {
     	this.dead = true;
@@ -46,17 +68,17 @@
        }  
 // to help my player left and right
     else if (me.input.isKeyPressed("left")){
-           this.body.vel.x -= this.body.accel.x * me.timer.tick;    
-           this.facing = "left"; 
-           this.flipX (false);
+       this.body.vel.x -= this.body.accel.x * me.timer.tick;    
+       this.facing = "left"; 
+       this.flipX (false);
       }
     else{
-      	this.body.vel.x = 0;
+    	this.body.vel.x = 0;
       } 
 // so my player will now jump.
     if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
-      	this.body.jumping = true;
-      	this.body.vel.y -= this.body.accel.y * me.timer.tick;
+      this.body.jumping = true;
+      this.body.vel.y -= this.body.accel.y * me.timer.tick;
       }
 //to make my player attack so he can damage the towers
         if (me.input.isKeyPressed("attack")) {
