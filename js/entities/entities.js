@@ -4,15 +4,15 @@
       this.setSuper();
       this.setPlayerTimers();
       this.setAttributes();
-    this.type = "PlayerEntity";
+      this.type = "PlayerEntity";
       this.setFlags();
 
 //screen will now follow the player
-     me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+      me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
-     this.addAnimation();
+      this.addAnimation();
        
-     this.renderable.setCurrentAnimation("idle");
+      this.renderable.setCurrentAnimation("idle");
 	},
 
   setSuper: function(){
@@ -56,57 +56,87 @@
 
 	update: function(delta){
 		  this.now = new Date().getTime();
-	// to make sure if the sure is pressing on the key//adds to the position of my x by adding the velocity defined in setVelocity() and multiplying it by me.timer.tick makes the movement smooth
-    if (this.health <= 0) {
-    	this.dead = true;
-    }
-    
-    if(me.input.isKeyPressed("right")) {
-        this.body.vel.x += this.body.accel.x * me.timer.tick;
-        this.facing = "right";
-        this.flipX(true);
-       }  
-// to help my player left and right
-    else if (me.input.isKeyPressed("left")){
-       this.body.vel.x -= this.body.accel.x * me.timer.tick;    
-       this.facing = "left"; 
-       this.flipX (false);
-      }
-    else{
-    	this.body.vel.x = 0;
-      } 
-// so my player will now jump.
-    if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
-      this.body.jumping = true;
-      this.body.vel.y -= this.body.accel.y * me.timer.tick;
-      }
-//to make my player attack so he can damage the towers
-        if (me.input.isKeyPressed("attack")) {
-       	if (!this.renderable.isCurrentAnimation("attack")) {
-      // 		console.log(!this.renderable.isCurrentAnimation("attack"))
-// sets animation to attack then once it  over it goes back to idle
-       	this.renderable.setCurrentAnimation("attack", "idle");
-//once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
-       	this.renderable.setAnimationFrame();
-       	}
-       }
+      
+      this.dead = checkIfDead();
 
-       else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")){
-       if (!this.renderable.isCurrentAnimation("walk")){
-       	this.renderable.setCurrentAnimation("walk");
-       }
-      }else if (!this.renderable.isCurrentAnimation("attack")){
-       	this.renderable.setCurrentAnimation("idle");
-        }
+      this.checkKeyPressedAndMove();
+
+ 
+      
+//to make my player attack so he can damage the towers
+    if (me.input.isKeyPressed("attack")) {
+    if (!this.renderable.isCurrentAnimation("attack")) {
+//console.log(!this.renderable.isCurrentAnimation("attack"))
+// sets animation to attack then once it  over it goes back to idle
+      this.renderable.setCurrentAnimation("attack", "idle");
+//once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
+      this.renderable.setAnimationFrame();
+      }
+    }
+
+    else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")){
+    if (!this.renderable.isCurrentAnimation("walk")){
+      this.renderable.setCurrentAnimation("walk");
+      }
+    }
+    else if (!this.renderable.isCurrentAnimation("attack")){
+      this.renderable.setCurrentAnimation("idle");
+    }
 
       me.collision.check(this, true, this.collideHandler.bind(this), true);
 
-       this.body.update(delta);
+      this.body.update(delta);
        
-       this._super(me.Entity, "update", [delta]);
-       return true;
+      this._super(me.Entity, "update", [delta]);
+      return true;
 
 	},
+
+  checkIfDead: function(){
+
+  // to make sure if the sure is pressing on the key//adds to the position of my x by adding the velocity defined in setVelocity() and multiplying it by me.timer.tick makes the movement smooth
+    if (this.health <= 0) {
+    return true;
+    }
+  },
+
+  checkKeyPressedAndMove: function(){
+    if(me.input.isKeyPressed("right")) {
+      this.moveRight();
+      }  
+// to help my player left and right
+    else if (me.input.isKeyPressed("left")){
+      this.moveLeft();
+      } 
+    else{
+      this.body.vel.x = 0;
+      } 
+// so my player will now jump.
+    if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
+      this.jump();
+      }
+  },
+
+  moveRight: function(){
+        //adds to the position of my x by the velocity defined above in setVelocity() and multiplying it by me.timer.tick me.timer.tick makes the movement look smooth
+      this.body.vel.x += this.body.accel.x * me.timer.tick;
+      this.facing = "right";
+      this.flipX(true);
+      // for my player to move right 
+  },
+
+  moveLeft: function(){
+    //for my player to move left
+      this.body.vel.x -= this.body.accel.x * me.timer.tick;    
+      this.facing = "left"; 
+      this.flipX (false);
+  },
+
+  jump: function(){
+      this.body.jumping = true;
+      this.body.vel.y -= this.body.accel.y * me.timer.tick;
+  },
+
 
 	loseHealth: function(damage){
         this.health = this.health - damage;
@@ -137,7 +167,7 @@
           }
         if (!this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= game.data.playerAttackTimer) {
         	console.log("tower Hit");
-        	this.lastHit = this.now;
+         	this.lastHit = this.now;
         	response.b.loseHealth(game.data.playerAttack);
           }  
      	}else if(response.b.type=== 'EnemyCreep'){
@@ -185,3 +215,4 @@
 
 
 
+ 
