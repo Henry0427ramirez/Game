@@ -45,6 +45,7 @@
       //keeps track of the direction your character is going
      this.facing = "right";
      this.dead = false;
+     this.attacking = false;
   },
 
   addAnimation: function(){
@@ -56,37 +57,11 @@
 
 	update: function(delta){
 		  this.now = new Date().getTime();
-      
       this.dead = checkIfDead();
-
       this.checkKeyPressedAndMove();
-
- 
-      
-//to make my player attack so he can damage the towers
-    if (me.input.isKeyPressed("attack")) {
-    if (!this.renderable.isCurrentAnimation("attack")) {
-//console.log(!this.renderable.isCurrentAnimation("attack"))
-// sets animation to attack then once it  over it goes back to idle
-      this.renderable.setCurrentAnimation("attack", "idle");
-//once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
-      this.renderable.setAnimationFrame();
-      }
-    }
-
-    else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")){
-    if (!this.renderable.isCurrentAnimation("walk")){
-      this.renderable.setCurrentAnimation("walk");
-      }
-    }
-    else if (!this.renderable.isCurrentAnimation("attack")){
-      this.renderable.setCurrentAnimation("idle");
-    }
-
+      this.setAnimation();
       me.collision.check(this, true, this.collideHandler.bind(this), true);
-
-      this.body.update(delta);
-       
+      this.body.update(delta);    
       this._super(me.Entity, "update", [delta]);
       return true;
 
@@ -115,6 +90,8 @@
     if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
       this.jump();
       }
+
+      this.attacking.me.input.isKeyPressed("attack");
   },
 
   moveRight: function(){
@@ -135,6 +112,28 @@
   jump: function(){
       this.body.jumping = true;
       this.body.vel.y -= this.body.accel.y * me.timer.tick;
+  },
+
+  setAnimation: function(){
+      //to make my player attack so he can damage the towers
+    if (this.attacking) {
+    if (!this.renderable.isCurrentAnimation("attack")) {
+//console.log(!this.renderable.isCurrentAnimation("attack"))
+// sets animation to attack then once it  over it goes back to idle
+      this.renderable.setCurrentAnimation("attack", "idle");
+//once the animation is over the sequence continues from the first animation idle no the one where we last left off from.
+    this.renderable.setAnimationFrame();
+      }
+    }
+
+    else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")){
+    if (!this.renderable.isCurrentAnimation("walk")){
+      this.renderable.setCurrentAnimation("walk");
+      }
+    }
+    else if (!this.renderable.isCurrentAnimation("attack")){
+      this.renderable.setCurrentAnimation("idle");
+    }
   },
 
 
