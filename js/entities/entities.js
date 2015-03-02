@@ -15,7 +15,7 @@
       this.renderable.setCurrentAnimation("idle");
 	},
 
-  setSuper: function(){
+  setSuper: function(x, y){
       this._super(me.Entity, 'init', [x, y, {
       image: "player",
       width: 64,
@@ -57,7 +57,7 @@
 
 	update: function(delta){
 		  this.now = new Date().getTime();
-      this.dead = checkIfDead();
+      this.dead = this.checkIfDead();
       this.checkKeyPressedAndMove();
       this.setAnimation();
       me.collision.check(this, true, this.collideHandler.bind(this), true);
@@ -76,6 +76,7 @@
   },
 
   checkKeyPressedAndMove: function(){
+    //binds the key
     if(me.input.isKeyPressed("right")) {
       this.moveRight();
       }  
@@ -90,8 +91,7 @@
     if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
       this.jump();
       }
-
-      this.attacking.me.input.isKeyPressed("attack");
+      this.attacking = me.input.isKeyPressed("attack");
   },
 
   moveRight: function(){
@@ -142,16 +142,16 @@
       //  console.log(this.health);
 	},
 /**/
-  collideHandler: function (response) {
+  collideHandler: function(response) {
     if (response.b.type=== 'EnemyBaseEntity') {
-      this.collisionEnemyBase();
+      this.collisionEnemyBase(response);
      	}
-    else if(response.b.type=== 'EnemyCreep'){
-      this.collisionEnemyCreep();
+    else if(response.b.type === 'EnemyCreep'){
+      this.collisionEnemyCreep(response);
      	}
   },
 
-  collisionEnemyBase: function(){
+  collisionEnemyBase: function(response){
       var ydif = this.pos.y - response.b.pos.y;
       var xdif = this.pos.x -response.b.pos.x;
 
