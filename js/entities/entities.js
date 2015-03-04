@@ -6,7 +6,6 @@
       this.setAttributes();
       this.type = "PlayerEntity";
       this.setFlags();
-
 //screen will now follow the player
       me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
@@ -225,10 +224,3 @@
  
 
 
-
-
-
-
-
-
- 
