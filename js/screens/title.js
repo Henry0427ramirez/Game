@@ -6,25 +6,57 @@ game.TitleScreen = me.ScreenObject.extend({
 	onResetEvent: function() {	
 		me.game.world.addChild(new me.Sprite(0, 0, me.loader.getImage('title-screen')), -10); // TODO
 
-		me.input.bindKey(me.input.KEY.ENTER, "start");
 
 		me.game.world.addChild(new (me.Renderable.extend({
-            init: function(){
-                this._super(me.Renderable,'init', [510, 30, me.game.viewport.width, me.game.viewport.height]);
-                this.font = new me.Font("Arial", 46, "white");
-            },
+    init: function(){
+        this._super(me.Renderable,'init', [270, 240, 300, 50]);
+        this.font = new me.Font("Arial", 46, "white");
+        me.input.registerPointerEvent('pointerdown', this, this.newgame.bind(this), true);
+    },
 
-            draw: function(renderer){
-                this.font.draw(renderer.getContext(),"AwesomeNauts!", 450, 130);
-                this.font.draw(renderer.getContext(), "Press ENTER to Play!", 250, 530);
-            }
-		})));
+    draw: function(renderer){
+        this.font.draw(renderer.getContext(),"Start Game!", this.pos.x, this.pos.y);
+    },
+         
+    update: function(dt){
+        return true;
+    },
 
-		this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge){
-            if (action === "start") {
-            	me.state.change(me.state.PLAY);
-            }
-		});
+    newgame: function(){
+        me.input.releasePointerEvent('pointerdown', this);
+        me.save.remove('exp1');
+        me.save.remove('exp2');
+        me.save.remove('exp3');
+        me.save.remove('exp4');
+        me.state.change(me.state.PLAY);
+
+    }
+
+})));
+
+	me.game.world.addChild(new (me.Renderable.extend({
+    init: function(){
+        this._super(me.Renderable,'init', [370, 340, 250, 50]);
+        this.font = new me.Font("Arial", 46, "white");
+        me.input.registerPointerEvent('pointerdown', this, this.newgame.bind(this), true);
+    },
+
+    draw: function(renderer){
+        this.font.draw(renderer.getContext(),"Continue", this.pos.x, this.pos.y);
+    },
+         
+    update: function(dt){
+        return true;
+    },
+
+    newgame: function(){
+        me.input.releasePointerEvent('pointerdown', this);
+        me.state.change(me.state.PLAY);
+
+    }
+
+})));
+
 	},
 	
 	
@@ -32,7 +64,6 @@ game.TitleScreen = me.ScreenObject.extend({
 	 *  action to perform when leaving this screen (state change)
 	 */
 	onDestroyEvent: function() {
-		me.input.unbindKey(me.input.KEY.ENTER);
-		me.event.unsubscribe(this.handler); // TODO
+
 	}
 });
