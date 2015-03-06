@@ -7,8 +7,8 @@ var game = {
 		// score
 		score : 0,
 		// to use for my entities
-		enemyBaseHealth: 10,
-		playerBaseHealth: 10,
+		enemyBaseHealth: 1,
+		playerBaseHealth: 1,
 		enemyCreepHealth: 300,
 		playerHealth: 20,
 		enemyCreepAttack: 1,
@@ -46,6 +46,9 @@ var game = {
 	}
     
     me.save.add({exp: 0, exp1: 0, exp2: 0, exp3: 0, exp4: 0});
+
+    console.log(game.data.exp);
+    console.log(game.data.exp2);
 	// Initialize the audio.
 	me.audio.init("mp3,ogg");
 
