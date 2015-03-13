@@ -19,7 +19,8 @@ game.SpendExp = me.ScreenObject.extend({
         this.font.draw(renderer.getContext(),"F1: Increase gold gained" + game.data.exp.toString(), this.pos.x + 200, this.pos.y + 100);  
         this.font.draw(renderer.getContext(),"Increase damage" + game.data.exp.toString(), this.pos.x + 200, this.pos.y + 150);
         this.font.draw(renderer.getContext(),"F3: Increase health" + game.data.exp.toString(), this.pos.x + 200, this.pos.y + 200);
-        this.font.draw(renderer.getContext(),"Increase Speed overall" + game.data.exp.toString(), this.pos.x + 200, this.pos.y + 250);
+        this.font.draw(renderer.getContext(),"Increase Speed" + game.data.exp.toString(), this.pos.x + 200, this.pos.y + 250);
+        this.font.draw(renderer.getContext(),"Increase Attack Speed" + game.data.exp.toString(), this.pos.x + 200, this.pos.y + 300);
     }
     
 })));
