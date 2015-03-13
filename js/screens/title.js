@@ -1,4 +1,3 @@
-
 game.TitleScreen = me.ScreenObject.extend({
 	/**	
 	 *  action to perform on state change
@@ -16,6 +15,7 @@ game.TitleScreen = me.ScreenObject.extend({
 
     draw: function(renderer){
         this.font.draw(renderer.getContext(),"Start Game!", this.pos.x, this.pos.y);
+        renderer.strokeRect(this.pos.x, this.pos.y, this.width, this.height, "green");
     },
          
     update: function(dt){
@@ -28,21 +28,22 @@ game.TitleScreen = me.ScreenObject.extend({
         me.save.remove('exp2');
         me.save.remove('exp3');
         me.save.remove('exp4');
+        me.save.add({exp: 0, exp1: 0, exp2: 0, exp3: 0, exp4: 0});
         me.state.change(me.state.PLAY);
 
     }
-
 })));
 
-	me.game.world.addChild(new (me.Renderable.extend({
+me.game.world.addChild(new (me.Renderable.extend({
     init: function(){
-        this._super(me.Renderable,'init', [370, 340, 250, 50]);
+        this._super(me.Renderable,'init', [380, 340, 250, 50]);
         this.font = new me.Font("Arial", 46, "white");
         me.input.registerPointerEvent('pointerdown', this, this.newgame.bind(this), true);
     },
 
     draw: function(renderer){
-        this.font.draw(renderer.getContext(),"Continue", this.pos.x, this.pos.y);
+        this.font.draw(renderer.getContext(),"CONTINUE", this.pos.x, this.pos.y);
+        renderer.strokeRect(this.pos.x, this.pos.y, this.width, this.height, "blue");
     },
          
     update: function(dt){
@@ -56,7 +57,7 @@ game.TitleScreen = me.ScreenObject.extend({
         game.data.exp = me.save.exp3;
         game.data.exp = me.save.exp4;
         me.input.releasePointerEvent('pointerdown', this);
-        me.state.change(me.state.PLAY);
+        me.state.change(me.state.SPENDEXP);
 
     }
 
