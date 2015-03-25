@@ -64,8 +64,6 @@ me.game.world.addChild(new (me.Renderable.extend({
 })));
 
 	},
-	
-	
 	/**	
 	 *  action to perform when leaving this screen (state change)
 	 */
