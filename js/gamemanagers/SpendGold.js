@@ -46,7 +46,7 @@ game.SpendGold= Object.extend({
   setBuyText: function(){
   game.data.buyText = new (me.Renderable.extend({
   init: function(){
-    this._super(me.Renderable,'init', [game.data.pausePos.x, gmae.data.pausePos.y , 300, 50]);
+    this._super(me.Renderable,'init', [game.data.pausePos.x, game.data.pausePos.y , 300, 50]);
     this.font = new me.Font("Arial", 26, "white");
     this.updateWhenPaused = true;
     this.alwaysUpdate = true;

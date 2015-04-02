@@ -29,7 +29,7 @@ game.TitleScreen = me.ScreenObject.extend({
         me.save.remove('exp3');
         me.save.remove('exp4');
         me.save.add({exp: 0, exp1: 0, exp2: 0, exp3: 0, exp4: 0});
-        me.state.change(me.state.PLAY);
+        me.state.change(me.state.NEW);
 
     }
 })));
@@ -57,7 +57,7 @@ me.game.world.addChild(new (me.Renderable.extend({
         game.data.exp = me.save.exp3;
         game.data.exp = me.save.exp4;
         me.input.releasePointerEvent('pointerdown', this);
-        me.state.change(me.state.SPENDEXP);
+        me.state.change(me.state.LOAD);
 
     }
 
