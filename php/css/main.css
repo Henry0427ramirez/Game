@@ -1,0 +1,49 @@
+body{
+  font-size: 35px;
+  text-align: right;
+  position: right; 
+  top: 0;
+  left: 0;
+  /* Preserve aspet ratio */
+  background-image: url("../images/man-and-little-girl.jpg");
+  background-size: cover;
+  background-repeat: no-repeat; 
+  max-width: 100%;
+}
+h1{
+  color: white;
+  background-color:rgba(0,0,0,.6);
+}
+label{
+  color: white;
+  background-color:rgba(0,0,0,.6);
+}
+li{
+  font-size: 20px;
+}
+  .navbar-static-top{
+  max-width: 100%;
+  color:#0C1C2E;
+}
+.col-xs-6{
+  max-width: 50%;
+}
+.class{
+ font-size: 40%;
+}
+p{
+  font-size: 40%;
+}
+
+
+@media screen and (max-width: 460px) {
+body {
+  max-width: 100%;
+  max-height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+ 
+}
+}
+
