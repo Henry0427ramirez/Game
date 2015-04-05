@@ -46,7 +46,7 @@ game.ExperienceManager = Object.extend({
       }
     })
     .fail(function(response){
-        alert("Fail");
+      alert("Fail");
     });
   }
 });
