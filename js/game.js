@@ -6,6 +6,8 @@ var game = {
 	data : {
 		// score
 		score : 0,
+		option1: "",
+		option2: "",
 		// to use for my entities
 		enemyBaseHealth: 1,
 		playerBaseHealth: 1,
@@ -19,6 +21,7 @@ var game = {
 		creepMoveSpeed: 3,
 		gameTimerManager: "",
 		heroDeathManager: "",
+		spearTimer: "",
 		player: "",
 		exp: 0,
         gold: 0,
@@ -83,6 +86,7 @@ var game = {
         me.pool.register("HeroDeathManager", game.HeroDeathManager);    
         me.pool.register("ExperienceManager", game.ExperienceManager); 
         me.pool.register("SpendGold", game.SpendGold);
+        me.pool.register("spear", game.SpearThrow);
         
 
 		me.state.set(me.state.MENU, new game.TitleScreen());
