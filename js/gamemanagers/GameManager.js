@@ -16,39 +16,41 @@ game.ExperienceManager = Object.extend({
   },
 
   gameOver: function(win){
-    if (win) {
-      game.data.exp += 10;
-    }
-    else{
-      game.data.exp += 1;
-    }
-      this.gameover = true;
-      me.save.exp = game.data.exp;
-//for testing purposes only!!
-     $.ajax{(
-      type: "post",
-      url: "php/controller/save-user.php",
-      data: {
+if (win) {
+  game.data.exp += 10;
+}
+else{
+  game.data.exp += 1;
+}
+  this.gameover = true;
+  me.save.exp = game.data.exp;
+
+  $ajax ({
+    type:"POST",
+    url: "php/controller/save-user.php",
+    data: {
       exp: game.data.exp,
       exp1: game.data.exp1,
       exp2: game.data.exp2,
       exp3: game.data.exp3,
       exp4: game.data.exp4,
     },
-      dataType: "text"
-    )}
-    .success(function(response){
-      if (response==="true") {
-      me.state.change(me.state.PLAY);
-    }
-    else{
-      alert(response);
+    dataType: "text"
+  })
+
+    .success(function (response) {
+      if (response === "true") {
+        me.state.change(me.state.MENU);
+      }
+      else{
+        alert(response);
       }
     })
-    .fail(function(response){
+    .fail(function(response) {
       alert("Fail");
     });
   }
+  
 });
 
 
