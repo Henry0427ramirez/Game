@@ -3,7 +3,7 @@ game.MiniPlayerLocation = me.Entity.extend({
 		this.settings = settings;
 		this.r = 5;
 		this.diameter = (this.r+2) *2;
-		this.anchorpoint = new.me.Vector2d(0,0);
+		this.anchorpoint = new me.Vector2d(0,0);
 		this.loc = x, y;
 		this.settings.width = this.diameter;
 		this.settings.height = this.diameter;
@@ -11,13 +11,13 @@ game.MiniPlayerLocation = me.Entity.extend({
 		this.settings = this.diameter;
 		this.floating = true;
 		this.image = me.video.createCanvas(this.settings.width, this.settings.height);	
-		var ctx =me.video.remove.getContexted2d(this.image);
+		var ctx = me.video.renderer.getContext2d(this.image);
 
 		ctx.fillstyle = "rgba(0, 192, 32, 0.75)";
 		ctx.strokeStyle = "blue";
 		ctx.lineWidth = 2;
 
-		ctx.arc(this.r + 2, this.r +2, this.r, 0. Math.PI*2);
+		ctx.arc(this.r + 2, this.r +2, this.r, 0, Math.PI*2);
 		ctx.fill();
 		ctx.stroke();
 
@@ -34,14 +34,13 @@ game.MiniPlayerLocation = me.Entity.extend({
 	},
 
 	draw: function(renderer){
-		this.._super(me.Entity, "draw", [renderer]);
+		this._super(me.Entity, "draw", [renderer]);
 		this.floating = true;
-		renderer.drawImage{
+		renderer.drawImage(
 			this.image,
-			0, 0, this.width, this.height,
+			0,0, this.width, this.height,
 			this.pos.x, this.pos.y, this.width, this.height
-
-		};
+		);
 	},
 
 	update: function(){
