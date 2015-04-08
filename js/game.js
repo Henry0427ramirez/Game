@@ -39,7 +39,8 @@ var game = {
         pausePos: "",
         buyscreen: "",
         buytext: "",
-        minimap: ""
+        minimap: "",
+        miniplayer: ""
 	},
 	
 	
@@ -89,7 +90,7 @@ var game = {
         me.pool.register("SpendGold", game.SpendGold);
         me.pool.register("spear", game.SpearThrow, true);
         me.pool.register("miniMap", game.MiniMap, true);
-        
+        me.pool.register("miniplayer", game.MiniPlayerLocation, true);
 
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());

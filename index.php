@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <?php 
-    require_once("php/controller/create-db.php");
+    require_once("php/controller/create-db.php"); 
 ?>
 <html>
 	<head>
@@ -13,7 +13,7 @@
         <link rel="apple-touch-icon" href="icons/touch-icon-iphone-60x60.png">
         <link rel="apple-touch-icon" sizes="152x152" href="icons/touch-icon-ipad-retina-152x152.png">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	</head>
 	<body>
 		<!-- Canvas placeholder -->
@@ -57,93 +57,104 @@
 		<script type="text/javascript" src="js/entities/HUD.js"></script>
         <script type="text/javascript" src="js/entities/SpearThrow.js"></script>
 		<script type="text/javascript" src="js/screens/title.js"></script>
-        <script type="text/javascript" src="js/entities/MiniMap.js"></script> 
+        <script type="text/javascript" src="js/entities/MiniMap.js"></script>
+        <script type="text/javascript" src="js/entities/MiniPLayerLocation.js"></script>  
 		<script type="text/javascript" src="js/screens/play.js"></script>
 		<script type="text/javascript" src="js/screens/SpendExp.js"></script>   
 		<script type="text/javascript" src="js/screens/loadprofile.js"></script>
         <script type="text/javascript" src="js/screens/newprofile.js"></script>
 		<!-- /build -->
 		<!-- Bootstrap & Mobile optimization tricks -->
-		<script type="text/javascript">
-			window.onReady(function onReady() {
-				game.onload();
+        <script type="text/javascript">
+            window.onReady(function onReady() {
+                game.onload();
 
-				// Mobile browser hacks
-				if (me.device.isMobile && !navigator.isCocoonJS) {
-					// Prevent the webview from moving on a swipe
-					window.document.addEventListener("touchmove", function (e) {
-						e.preventDefault();
-						window.scroll(0, 0);
-						return false;
-					}, false);
+                // Mobile browser hacks
+                if (me.device.isMobile && !navigator.isCocoonJS) {
+                    // Prevent the webview from moving on a swipe
+                    window.document.addEventListener("touchmove", function (e) {
+                        e.preventDefault();
+                        window.scroll(0, 0);
+                        return false;
+                    }, false);
 
-					// Scroll away mobile GUI
-					(function () {
-						window.scrollTo(0, 1);
-						me.video.onresize(null);
-					}).defer();
+                    // Scroll away mobile GUI
+                    (function () {
+                        window.scrollTo(0, 1);
+                        me.video.onresize(null);
+                    }).defer();
 
-					me.event.subscribe(me.event.WINDOW_ONRESIZE, function (e) {
-						window.scrollTo(0, 1);
-					});
-				}
-			});
-		</script>
-
-		<script>
+                    me.event.subscribe(me.event.WINDOW_ONRESIZE, function (e) {
+                        window.scrollTo(0, 1);
+                    });
+                }
+            });
+        </script>
+        
+        <script>
+        // <!-- makes the mainmenu key work and execute the action it is suppose to do go to the main menu from the page the user is on
         $("#mainmenu").bind("click", function(){
-         		me.state.change(me.state.MENU);
+            me.state.change(me.state.MENU);
         });
+        // <!-- makes the register key work and execute the action it is suppose to do
         $("#register").bind("click", function(){
-         	$.ajax{(
-              	type: "post",
-              	url: "php/controller/create-user.php",
-              	data: {
-              	username: $('username').val(),
-              	password: $('password').val()
+            $.ajax({
+                type: "POST",
+                url: "php/controller/create-user.php",
+                data: {
+                    username: $('#username').val(),
+                    password: $('#password').val()
                 },
                 dataType: "text"
-            )}
-         	.success(function(response){
-         	    if (response==="true") {
-                  me.state.change(me.state.PLAY);
-         		}
-         		else{
-         			alert(response);
-         		}
-         	})
+            }) // if the register works then this code will execute
+            .success(function(response){
+                if(response === "true"){
+                me.state.change(me.state.PLAY);
+                }else{
+                me.state.change(me.state.PLAY);
+                alert(response);
+             }
+            })
+            //if the register doesnt work this code will execute
             .fail(function(response){
-              	alert("Fail");
+                //if it doesnt work this will be printed
+                alert("Fail");
             });
         });
+        // <!-- makes the load key work and execute the action it is suppose to do
         $("#load").bind("click", function(){
-         	$.ajax{(
-              	type: "post",
-              	url: "php/controller/login-user.php",
-              	data: {
-              	username: $('username').val(),
-              	password: $('password').val()
+            $.ajax({
+                type: "POST",
+                url: "php/controller/login-user.php",
+                data: {
+                    username: $('#username').val(),
+                    password: $('#password').val()
                 },
                 dataType: "text"
-            )}
-         	.success(function(response){
-         	    if (response==="Invalid username and password") {
-                  	alert(response);
-         		}
-         		else{
-                    var data = jQuery.parseJSON(response); 
+            }) // if the register works then this code will execute
+            .success(function(response){
+                me.state.change(me.state.PLAY);
+                if(response=="Invalid"){
+                    me.state.change(me.state.PLAY);
+                    alert (response);
+                 }else{
+                    var data = jQuery.parseJSON(response);
                     game.data.exp = data["exp"];
-                    game.data.exp = data["exp1"];
-                    game.data.exp = data["exp2"];
-                    game.data.exp = data["exp3"];        			
-                    game.data.exp = data["exp4"];
-         			me.state.change(me.state.SPENDEXP);
-         		}
-         	})
+                    game.data.exp1 = data["exp1"];
+                    game.data.exp2 = data["exp2"];
+                    game.data.exp3 = data["exp3"];
+                    game.data.exp4 = data["exp4"];
+                    me.state.change(me.state.SPENDEXP);
+                }
+            })
+            //if the register doesnt work this code will execute
             .fail(function(response){
-              	alert("Fail");
+                //if it doesnt work this will be printed
+                alert("Fail");
             });
         });
-		</script>
+        
+
+        </script>
 	</body>
 </html>

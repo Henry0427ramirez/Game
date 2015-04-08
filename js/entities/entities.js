@@ -8,9 +8,7 @@
       this.setFlags();
 //screen will now follow the player
       me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
-
       this.addAnimation();
-       
       this.renderable.setCurrentAnimation("idle");
 	},
 

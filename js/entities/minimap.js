@@ -7,7 +7,7 @@ game.MiniMap = me.Entity.extend({
 			spritewidth: "73",
 			spriteheight: "45",
 			getShape: function(){
-				return (new me.Rect(0 , 0, 73, 70)). polygon();
+				return (new me.Rect(0 , 0, 73, 45)).toPolygon();
 			}
 		}]);
    		this.floating = true;
