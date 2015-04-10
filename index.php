@@ -129,15 +129,16 @@
                 data: {
                     username: $('#username').val(),
                     password: $('#password').val()
+                    //passes in the username and password inputs that it is taking
                 },
                 dataType: "text"
-            }) // if the register works then this code will execute
+            })
             .success(function(response){
-                me.state.change(me.state.PLAY);
-                if(response=="Invalid"){
-                    me.state.change(me.state.PLAY);
-                    alert (response);
-                 }else{
+                if(response==="Invalid username and/or password"){
+                    alert(response);
+                }
+                //alerts this to the screen if there is an invalid username/password combination
+                else{
                     var data = jQuery.parseJSON(response);
                     game.data.exp = data["exp"];
                     game.data.exp1 = data["exp1"];
@@ -146,15 +147,11 @@
                     game.data.exp4 = data["exp4"];
                     me.state.change(me.state.SPENDEXP);
                 }
+                //loads all the previous experience for the user if the username/password combination proves to be valid
             })
-            //if the register doesnt work this code will execute
             .fail(function(response){
-                //if it doesnt work this will be printed
                 alert("Fail");
             });
-        });
-        
-
-        </script>
+        });        </script>
 	</body>
 </html>
