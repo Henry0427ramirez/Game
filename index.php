@@ -139,6 +139,7 @@
                 }
                 //alerts this to the screen if there is an invalid username/password combination
                 else{
+                    alert(response);
                     var data = jQuery.parseJSON(response);
                     game.data.exp = data["exp"];
                     game.data.exp1 = data["exp1"];
